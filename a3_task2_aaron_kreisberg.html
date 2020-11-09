@@ -402,9 +402,10 @@ sw_sep_hair &lt;- starwars %&gt;% # Start with starwars
   separate(col = hair_color, # Separate the hair_color column...
            into = c(&quot;hair_1&quot;,&quot;hair_2&quot;), # Into two columns &#39;hair_1&#39; &amp; &#39;hair_2&#39;
            sep = &quot;,&quot; # Separated at the first comma
-  )
-
-# Note: you will get a message letting you know that it expected two pieces separated by a comma for each entry, but if there is NOT a comma then the second column is just populated with a missing value `NA`
+  )</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 79 rows [1, 4, 5,
+## 7, 9, 11, 13, 14, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, ...].</code></pre>
+<pre class="r"><code># Note: you will get a message letting you know that it expected two pieces separated by a comma for each entry, but if there is NOT a comma then the second column is just populated with a missing value `NA`
 
 # Use View(sw_sep_hair) in the Console to ensure that the two columns show up</code></pre>
 </div>
@@ -415,10 +416,14 @@ sw_sep_hair &lt;- starwars %&gt;% # Start with starwars
 <p>**Note: You should get a warning about one piece dropped. What happens to the name in Row 49, which contains two dashes?</p>
 <pre class="r"><code># Your code here: 
 
-sw_split_name &lt;- starwars %&gt;% 
-  separate(col = name,
-           into = c(&quot;name_1&quot;, &quot;name_2&quot;),
-           sep = &quot;-&quot;)</code></pre>
+sw_split_name &lt;- starwars %&gt;% #Reading in the starwars data
+  separate(col = name, #Separate the name column
+           into = c(&quot;name_1&quot;, &quot;name_2&quot;), #Into &quot;name_1&quot; and &quot;name_2&quot;
+           sep = &quot;-&quot;) # Separated at the first dash</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Additional pieces discarded in 1 rows [49].</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 79 rows [1, 4, 5,
+## 6, 7, 9, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 23, 24, 25, ...].</code></pre>
+<pre class="r"><code>#Use View(sw_split_name) in the console to ensure the two columns show up</code></pre>
 </div>
 <div id="b.-follow-me" class="section level4">
 <h4>1B. Follow me</h4>
@@ -435,9 +440,10 @@ sw_sep_names &lt;- starwars %&gt;% # Start from starwars data
            into = c(&quot;name_first&quot;,&quot;name_additional&quot;), # Into two columns
            sep = &quot; &quot;, # Creating the separation at the first *space*
            extra = &quot;merge&quot;, # If additional spaces, merge all into second column
-           remove = FALSE) # And *do not* remove the original column
-
-# Check the output to understand what it does.</code></pre>
+           remove = FALSE) # And *do not* remove the original column</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 24 rows [2, 3, 8,
+## 13, 15, 19, 20, 22, 23, 25, 26, 38, 39, 46, 49, 58, 63, 64, 73, 77, ...].</code></pre>
+<pre class="r"><code># Check the output to understand what it does.</code></pre>
 </div>
 <div id="b.-on-your-own" class="section level4">
 <h4>1B. On your own</h4>
@@ -445,12 +451,15 @@ sw_sep_names &lt;- starwars %&gt;% # Start from starwars data
 <p>Make sure to <code>View()</code> the resulting data frame (remember: run <code>View()</code> in the Console, or click on the object name in the Environment) to ensure it worked as expected.</p>
 <pre class="r"><code># Your code here:
 
-sw_skin_sep &lt;- starwars %&gt;% 
-  separate(col = skin_color,
-           into = c(&quot;skin_1&quot;, &quot;skin_2&quot;),
-           sep = &quot;,&quot;,
-           extra = &quot;merge&quot;,
-           remove = FALSE)</code></pre>
+sw_skin_sep &lt;- starwars %&gt;% # Use starwars data
+  separate(col = skin_color, # Separate the &#39;skin_color&#39; column
+           into = c(&quot;skin_1&quot;, &quot;skin_2&quot;), # Into &#39;skin_1&#39; and &#39;skin_2&#39;
+           sep = &quot;,&quot;, # Create separation at the first &#39;comma&#39;
+           extra = &quot;merge&quot;, #If additional commas, merge all into second column
+           remove = FALSE) # And *do not* remove the original column</code></pre>
+<pre><code>## Warning: Expected 2 pieces. Missing pieces filled with `NA` in 73 rows [1, 2, 4,
+## 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, ...].</code></pre>
+<pre class="r"><code># Check the output via View(sw_skin_sep) in the console</code></pre>
 </div>
 </div>
 <div id="tidyrunite" class="section level3">
@@ -466,7 +475,7 @@ sw_skin_sep &lt;- starwars %&gt;%
 mpg_make_model &lt;- mpg %&gt;% # Start with mpg
   unite(col = make_model, # Create a new column called &#39;make_model&#39;
         c(manufacturer, model), # That combines the manufacturer &amp; model column
-        sep = &quot;_&quot; # Puts &quot;HEY!&quot; between the pieces (default is underscore)
+        sep = &quot;_&quot; # Puts &quot;_&quot; between the pieces (default is underscore)
         ) 
 
 # Feel free to try different separators in the `sep = &quot;&quot;` argument above.
@@ -476,11 +485,11 @@ mpg_make_model &lt;- mpg %&gt;% # Start with mpg
 <h4>2A. On your own</h4>
 <p>In the code chunk below, starting from the <code>mpg</code> data create a new data frame called <code>mpg_model_class</code> with a new column called <code>model_class</code> that combines the <code>model</code> and <code>class</code> column information, separated by a dash “-”. Also add a line (similarly for <code>separate()</code> example above) that retains the original columns.</p>
 <pre class="r"><code># Your code here: 
-mpg_model_class &lt;- mpg %&gt;% 
-  unite(col = model_class,
-        c(model, class),
-        sep = &quot;-&quot;,
-        remove = FALSE)</code></pre>
+mpg_model_class &lt;- mpg %&gt;% # Start with mpg
+  unite(col = model_class, # Create a new column called &#39;model_class&#39;
+        c(model, class), # That combines the model &amp; class column
+        sep = &quot;-&quot;, # Puts &quot;-&quot; between the pieces 
+        remove = FALSE) # Retain the original column</code></pre>
 </div>
 </div>
 <div id="parsing-dates-with-lubridate" class="section level3">
@@ -529,11 +538,11 @@ my_dates_converted # Return my_dates_converted</code></pre>
 <p>In the code chunk below, create a vector (using <code>c()</code>, as above) stored as <code>some_dates</code> that contains three values that represent dates as numbers, in mdy format: 11061972, 02142007,01301843. Then in the next line, use <code>lubridate::mdy()</code> to return them in date format, storing as a vector <code>some_dates_converted</code>. Write a third line to check the class of that vector.</p>
 <pre class="r"><code># Your code here: 
 
-some_dates &lt;- c(11061972, 02142007, 01301843)
-some_dates_converted &lt;- mdy(some_dates)
-some_dates_converted</code></pre>
+some_dates &lt;- c(11061972, 02142007, 01301843) # Creates a vector of dates without spaces
+some_dates_converted &lt;- mdy(some_dates) # Converts to Date, stored as some_dates_converted
+some_dates_converted # Return some_dates_converted</code></pre>
 <pre><code>## [1] &quot;1972-11-06&quot; &quot;2007-02-14&quot; &quot;1843-01-30&quot;</code></pre>
-<pre class="r"><code>class(some_dates_converted)</code></pre>
+<pre class="r"><code>class(some_dates_converted) # Check the class</code></pre>
 <pre><code>## [1] &quot;Date&quot;</code></pre>
 </div>
 <div id="c.-follow-me" class="section level4">
@@ -553,9 +562,9 @@ lakers_dates &lt;- lakers %&gt;%
 
 points_by_month &lt;- lakers_dates %&gt;% 
   group_by(game_type, month_new) %&gt;% 
-  summarize(total_points = sum(points))
-
-# View it: 
+  summarize(total_points = sum(points))</code></pre>
+<pre><code>## `summarise()` regrouping output by &#39;game_type&#39; (override with `.groups` argument)</code></pre>
+<pre class="r"><code># View it: 
 points_by_month</code></pre>
 <pre><code>## # A tibble: 14 x 3
 ## # Groups:   game_type [2]
@@ -587,15 +596,16 @@ points_by_month</code></pre>
 <li>Find the <em>number</em> of Gasol’s hook shots recorded (not necessarily scored) by <strong>month</strong> (hint: <code>count(month)</code>) for the 2008 - 2009 season</li>
 </ul>
 <pre class="r"><code># Your code here: 
-gasol_hookshots &lt;- lakers %&gt;% 
-  filter(player == &quot;Pau Gasol&quot;, type == &quot;hook&quot;) %&gt;% 
-  mutate(Date = ymd(date)) %&gt;% 
-  mutate(month = month(Date))
+gasol_hookshots &lt;- lakers %&gt;% # Use the &#39;lakers&#39; data
+  filter(player == &quot;Pau Gasol&quot;, type == &quot;hook&quot;) %&gt;% # Filter for &#39;Pau Gasol&#39; and &#39;hook&#39; shot 
+  mutate(Date = ymd(date)) %&gt;% # Update to Date
+  mutate(month = month(Date)) # Create a column with just the month
 
 gasol_hook_by_month &lt;- gasol_hookshots %&gt;% 
   group_by(type, month) %&gt;% 
   select(player, type, month) %&gt;% 
-  count(month)</code></pre>
+  count(month)
+# Above is the code to find the number of Gasol&#39;s attempted hook shots by month </code></pre>
 </div>
 </div>
 <div id="dplyrcase_when" class="section level3">
@@ -621,8 +631,8 @@ storm_season &lt;- storms %&gt;% # Start from storms data
     month %in% c(3, 4, 5) ~ &quot;spring&quot;, # &quot;spring&quot; if month is 3, 4, or 5
     month %in% c(6, 7, 8) ~ &quot;summer&quot;, # &quot;summer if month is 6, 7 or 8
     month %in% c(9, 10, 11) ~ &quot;fall&quot; # &quot;fall&quot; if month is 9, 10 or 11
-  )
-  )
+    )
+    )
 
 # Run View(storm_season) in the Console to view the output data frame. See the new season column? That&#39;s been added using mutate &amp; case_when()! </code></pre>
 <p>4A. On your own</p>
@@ -630,10 +640,10 @@ storm_season &lt;- storms %&gt;% # Start from storms data
 <p>Note: If you add another condition within <code>case_when()</code> that is <code>TRUE ~ &quot;some thing&quot;</code>, then any entry that hasn’t been specified by previous conditions will get that “catch all” statement.</p>
 <pre class="r"><code># Your code here: 
 
-storms_danger &lt;- storms %&gt;% 
-  mutate(danger = case_when(
-    status == &quot;hurricane&quot; ~ &quot;high&quot;,
-    status %in% c(&quot;tropical depression&quot;, &quot;tropical storm&quot;) ~ &quot;moderate&quot;))</code></pre>
+storms_danger &lt;- storms %&gt;% # Start from storms data
+  mutate(danger = case_when( # Add a new column danger which contains
+    status == &quot;hurricane&quot; ~ &quot;high&quot;, # &#39;danger&#39; if the storm is a hurricane
+    status %in% c(&quot;tropical depression&quot;, &quot;tropical storm&quot;) ~ &quot;moderate&quot;)) # &#39;moderate&#39; if the storm is tropical depression or tropical storm</code></pre>
 </div>
 </div>
 <div id="practice-version-control-wgit" class="section level2">

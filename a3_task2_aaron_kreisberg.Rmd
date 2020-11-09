@@ -6,7 +6,7 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(lubridate)
 ```
@@ -58,10 +58,12 @@ Make sure to `View()` the resulting data frame (remember: run `View()` in the Co
 ```{r}
 # Your code here: 
 
-sw_split_name <- starwars %>% 
-  separate(col = name,
-           into = c("name_1", "name_2"),
-           sep = "-")
+sw_split_name <- starwars %>% #Reading in the starwars data
+  separate(col = name, #Separate the name column
+           into = c("name_1", "name_2"), #Into "name_1" and "name_2"
+           sep = "-") # Separated at the first dash
+
+#Use View(sw_split_name) in the console to ensure the two columns show up
 
 ```
 
@@ -96,13 +98,14 @@ Make sure to `View()` the resulting data frame (remember: run `View()` in the Co
 ```{r}
 # Your code here:
 
-sw_skin_sep <- starwars %>% 
-  separate(col = skin_color,
-           into = c("skin_1", "skin_2"),
-           sep = ",",
-           extra = "merge",
-           remove = FALSE)
+sw_skin_sep <- starwars %>% # Use starwars data
+  separate(col = skin_color, # Separate the 'skin_color' column
+           into = c("skin_1", "skin_2"), # Into 'skin_1' and 'skin_2'
+           sep = ",", # Create separation at the first 'comma'
+           extra = "merge", #If additional commas, merge all into second column
+           remove = FALSE) # And *do not* remove the original column
 
+# Check the output via View(sw_skin_sep) in the console
 ```
 
 ### 2. `tidyr::unite()`
@@ -123,7 +126,7 @@ Check the output after running the code.
 mpg_make_model <- mpg %>% # Start with mpg
   unite(col = make_model, # Create a new column called 'make_model'
         c(manufacturer, model), # That combines the manufacturer & model column
-        sep = "_" # Puts "HEY!" between the pieces (default is underscore)
+        sep = "_" # Puts "_" between the pieces (default is underscore)
         ) 
 
 # Feel free to try different separators in the `sep = ""` argument above.
@@ -137,11 +140,11 @@ In the code chunk below, starting from the `mpg` data create a new data frame ca
 
 ```{r}
 # Your code here: 
-mpg_model_class <- mpg %>% 
-  unite(col = model_class,
-        c(model, class),
-        sep = "-",
-        remove = FALSE)
+mpg_model_class <- mpg %>% # Start with mpg
+  unite(col = model_class, # Create a new column called 'model_class'
+        c(model, class), # That combines the model & class column
+        sep = "-", # Puts "-" between the pieces 
+        remove = FALSE) # Retain the original column
 
 ```
 
@@ -202,11 +205,11 @@ In the code chunk below, create a vector (using `c()`, as above) stored as `some
 ```{r}
 # Your code here: 
 
-some_dates <- c(11061972, 02142007, 01301843)
-some_dates_converted <- mdy(some_dates)
-some_dates_converted
+some_dates <- c(11061972, 02142007, 01301843) # Creates a vector of dates without spaces
+some_dates_converted <- mdy(some_dates) # Converts to Date, stored as some_dates_converted
+some_dates_converted # Return some_dates_converted
 
-class(some_dates_converted)
+class(some_dates_converted) # Check the class
 
 
 ```
@@ -251,16 +254,16 @@ Starting from the `lakers` dataset, create a new dataset called `gasol_hookshots
 
 ```{r}
 # Your code here: 
-gasol_hookshots <- lakers %>% 
-  filter(player == "Pau Gasol", type == "hook") %>% 
-  mutate(Date = ymd(date)) %>% 
-  mutate(month = month(Date))
+gasol_hookshots <- lakers %>% # Use the 'lakers' data
+  filter(player == "Pau Gasol", type == "hook") %>% # Filter for 'Pau Gasol' and 'hook' shot 
+  mutate(Date = ymd(date)) %>% # Update to Date
+  mutate(month = month(Date)) # Create a column with just the month
 
 gasol_hook_by_month <- gasol_hookshots %>% 
   group_by(type, month) %>% 
   select(player, type, month) %>% 
   count(month)
-
+# Above is the code to find the number of Gasol's attempted hook shots by month 
 ```
 
 ### 4. `dplyr::case_when()`
@@ -293,8 +296,8 @@ storm_season <- storms %>% # Start from storms data
     month %in% c(3, 4, 5) ~ "spring", # "spring" if month is 3, 4, or 5
     month %in% c(6, 7, 8) ~ "summer", # "summer if month is 6, 7 or 8
     month %in% c(9, 10, 11) ~ "fall" # "fall" if month is 9, 10 or 11
-  )
-  )
+    )
+    )
 
 # Run View(storm_season) in the Console to view the output data frame. See the new season column? That's been added using mutate & case_when()! 
 
@@ -310,10 +313,10 @@ Note: If you add another condition within `case_when()` that is `TRUE ~ "some th
 ```{r}
 # Your code here: 
 
-storms_danger <- storms %>% 
-  mutate(danger = case_when(
-    status == "hurricane" ~ "high",
-    status %in% c("tropical depression", "tropical storm") ~ "moderate"))
+storms_danger <- storms %>% # Start from storms data
+  mutate(danger = case_when( # Add a new column danger which contains
+    status == "hurricane" ~ "high", # 'danger' if the storm is a hurricane
+    status %in% c("tropical depression", "tropical storm") ~ "moderate")) # 'moderate' if the storm is tropical depression or tropical storm
 
 ```
 
